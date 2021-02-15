@@ -33,11 +33,11 @@ jobs:
       - run: conda config --show
 
       - run: |
-          conda create -n ci -c bioconda \
+          conda create -p $HOME/ci -c bioconda \
             fasttree \
             mafft
-          ls -l "$HOME/.conda/envs/ci/bin"
-          tee -a "$GITHUB_PATH" <<<"$HOME/.conda/envs/ci/bin"
+          ls -l "$HOME/ci/bin"
+          tee -a "$GITHUB_PATH" <<<"$HOME/ci/bin"
 
       - run: env
       - run: which python
