@@ -33,6 +33,8 @@ jobs:
       - run: conda config --show
 
       - run: |
+          mkdir -p /tmp/conda/pkgs
+          export CONDA_PKGS_DIRS=/tmp/conda/pkgs
           conda create -p $HOME/ci -c bioconda \
             fasttree \
             mafft
