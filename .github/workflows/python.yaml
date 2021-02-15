@@ -31,3 +31,18 @@ jobs:
       - run: which conda
       - run: conda --version
       - run: conda config --show
+
+      - run: |
+          conda create -n ci -c bioconda \
+            fasttree \
+            mafft
+          ls -l "$HOME/.conda/envs/ci/bin"
+          tee -a "$GITHUB_PATH" <<<"$HOME/.conda/envs/ci/bin"
+
+      - run: env
+      - run: which python
+      - run: python --version
+      - run: which python3
+      - run: python3 --version
+
+      - run: mafft --version
