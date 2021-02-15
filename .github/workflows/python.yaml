@@ -1,0 +1,33 @@
+name: Python
+
+on:
+  - push
+
+jobs:
+  main:
+    name: python=${{ matrix.python }} os=${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        python:
+          - 3.6
+          - 3.7
+          - 3.8
+          - 3.9
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - run: env
+      - run: which python
+      - run: python --version
+      - run: which python3
+      - run: python3 --version
+      - run: which conda
+      - run: conda --version
+      - run: conda config --show
