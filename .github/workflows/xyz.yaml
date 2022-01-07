@@ -1,0 +1,11 @@
+name: xyz
+
+on:
+  - push
+  - workflow_dispatch
+
+jobs:
+  xyz:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello there
