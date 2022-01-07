@@ -1,0 +1,17 @@
+name: def
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - def
+      - .github/workflows/def.yaml
+
+  workflow_dispatch:
+
+jobs:
+  def:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello there
