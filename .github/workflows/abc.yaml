@@ -1,0 +1,15 @@
+name: abc
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/abc.yaml
+  workflow_dispatch:
+
+jobs:
+  abc:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello there
