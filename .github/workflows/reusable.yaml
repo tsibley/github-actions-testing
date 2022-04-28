@@ -10,6 +10,7 @@ jobs:
     steps:
       - run: pwd
       - run: ls -lR .
+      - run: ls -lR /home/runner/work
       - run: env
       - run: ps aux
       - run: echo "$0"; cat "$0"
