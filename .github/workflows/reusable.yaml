@@ -1,0 +1,19 @@
+name: reusable
+on:
+  - workflow_call
+jobs:
+  a:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "github=$json"
+        env:
+          json: |
+            ${{ toJSON(github) }}
+      - run: echo "env=$json"
+        env:
+          json: |
+            ${{ toJSON(env) }}
+      - run: echo "job=$json"
+        env:
+          json: |
+            ${{ toJSON(job) }}
