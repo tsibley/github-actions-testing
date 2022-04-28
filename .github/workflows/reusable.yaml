@@ -12,6 +12,8 @@ jobs:
       - run: ls -lR .
       - run: env
       - run: ps aux
+      - run: echo "$0"; cat "$0"
+      - run: echo "${{ github.step_summary }}"; cat "${{ github.step_summary }}"
       - run: echo "github=$json"
         env:
           json: |
