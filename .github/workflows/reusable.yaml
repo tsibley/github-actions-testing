@@ -15,6 +15,9 @@ jobs:
       - run: ps aux
       - run: echo "$0"; cat "$0"
       - run: echo "${{ github.step_summary }}"; cat "${{ github.step_summary }}"
+      - run: cat "$file"
+        env:
+          file: "/home/runner/work/_PipelineMapping/${{ github.repository }}/PipelineFolder.json"
       - run: echo "github=$json"
         env:
           json: |
