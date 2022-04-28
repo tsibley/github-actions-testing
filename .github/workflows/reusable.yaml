@@ -1,10 +1,17 @@
 name: reusable
 on:
-  - workflow_call
+  workflow_call:
+    inputs:
+      ref:
+        type: string
 jobs:
   a:
     runs-on: ubuntu-latest
     steps:
+      - run: pwd
+      - run: ls -lR .
+      - run: env
+      - run: ps aux
       - run: echo "github=$json"
         env:
           json: |
@@ -17,3 +24,7 @@ jobs:
         env:
           json: |
             ${{ toJSON(job) }}
+      - run: echo "inputs=$json"
+        env:
+          json: |
+            ${{ toJSON(inputs) }}
