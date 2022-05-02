@@ -21,7 +21,7 @@ jobs:
           job_id=$(mktemp)
           attempt=0
 
-          while [[ "$attempt" -lte 10 ]]; then
+          while [[ "$attempt" -le 10 ]]; then
             curl -fsSL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID"/jobs \
                 -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               | jq -r '.jobs | map(select(.steps | map(select(.name == "${{ steps.generate-job-uuid.outputs.uuid }}")) | length != 0)) | .[0].id' \
