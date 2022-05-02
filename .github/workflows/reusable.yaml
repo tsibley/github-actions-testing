@@ -12,8 +12,9 @@ jobs:
         run: |
           echo "::set-output name=uuid::$(python3 -c 'from uuid import uuid4; print(uuid4())')"
 
-      - name: ${{ steps.generate-job-uuid.outputs.uuid }}
-        run: echo "Job UUID: ${{ steps.generate-job-uuid.outputs.uuid }}"
+      - name: "${{ steps.generate-job-uuid.outputs.uuid }}"
+        run: |
+          echo "Job UUID: ${{ steps.generate-job-uuid.outputs.uuid }}"
 
       - id: get-job-id
         run: |
