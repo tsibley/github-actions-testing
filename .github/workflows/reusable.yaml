@@ -8,16 +8,38 @@ jobs:
   x:
     runs-on: ubuntu-latest
     steps:
-      - id: job-instance
+      - id: generate-job-uuid
         run: |
           echo "::set-output name=uuid::$(python3 -c 'from uuid import uuid4; print(uuid4())')"
 
-      - name: ${{ steps.job-instance.outputs.uuid }}
-        run: echo "job instance is ${{ steps.job-instance.outputs.uuid }}"
+      - name: ${{ steps.generate-job-uuid.outputs.uuid }}
+        run: echo "Job UUID: ${{ steps.generate-job-uuid.outputs.uuid }}"
 
-      - run: |
-          sleep 5
-          curl -fsSiL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID"/jobs -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
+      - id: get-job-id
+        run: |
+          job_id=$(mktemp)
+          attempt=0
+
+          while [[ "$attempt" -lte 10 ]]; then
+            curl -fsSL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID"/jobs \
+                -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              | jq -r '.jobs | map(select(.steps | map(select(.name == "${{ steps.generate-job-uuid.outputs.uuid }}")) | length != 0)) | .[0].id' \
+              > "$job_id"
+
+            # We got a job id, so we're done.
+            [[ -s "$job_id" ]] && break
+
+            # Retry in 1s
+            : $((attempt++))
+            sleep 1
+          fi
+
+          if [[ ! -s "$job_id" ]]; then
+            echo "Failed to find job id" >&2
+            exit 1
+          fi
+
+          echo "GITHUB_JOB_ID=$(< "$job_id")" | tee -a "$GITHUB_ENV"
 
       - run: pwd
       - run: ls -lR .
