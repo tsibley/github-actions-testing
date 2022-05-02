@@ -8,6 +8,12 @@ jobs:
   x:
     runs-on: ubuntu-latest
     steps:
+      - id: job-instance
+        run: echo "::set-output name=uuid::$(uuid -v4)"
+      - run: echo "job instance is ${{ steps.job-instance.outputs.uuid }}"
+
+      - run: curl -fsSiL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID"/jobs -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
+
       - run: pwd
       - run: ls -lR .
       - run: ls -lR /home/runner/work
