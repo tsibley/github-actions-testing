@@ -24,7 +24,7 @@ jobs:
           while [[ "$attempt" -le 10 ]]; do
             curl -fsSL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID"/jobs \
                 -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              | jq -r '.jobs | map(select(.steps | map(select(.name == "${{ steps.generate-job-uuid.outputs.uuid }}xxx")) | length != 0)) | .[0].id | values' \
+              | jq -r '.jobs | map(select(.steps | map(select(.name == "${{ steps.generate-job-uuid.outputs.uuid }}")) | length != 0)) | .[0].id | values' \
               > "$job_id"
 
             # We got a job id, so we're done.
