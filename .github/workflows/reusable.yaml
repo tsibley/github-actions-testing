@@ -9,12 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: job-instance
-        name: ${{ steps.job-instance.outputs.uuid }}
         run: |
           echo "::set-output name=uuid::$(python3 -c 'from uuid import uuid4; print(uuid4())')"
 
-      #- name: ${{ steps.job-instance.outputs.uuid }}
-      #  run: echo "job instance is ${{ steps.job-instance.outputs.uuid }}"
+      - name: ${{ steps.job-instance.outputs.uuid }}
+        run: echo "job instance is ${{ steps.job-instance.outputs.uuid }}"
 
       - run: |
           sleep 5
