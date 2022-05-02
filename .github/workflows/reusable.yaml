@@ -16,6 +16,7 @@ jobs:
         run: echo "job instance is ${{ steps.job-instance.outputs.uuid }}"
 
       - run: |
+          sleep 5
           curl -fsSiL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID"/jobs -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
 
       - run: pwd
