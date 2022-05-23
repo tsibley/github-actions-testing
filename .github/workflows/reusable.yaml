@@ -14,9 +14,7 @@ jobs:
     steps:
       - if: inputs.env
         name: Set environment variables
-        run: echo "$env" | tee -a "$GITHUB_ENV"
-        env:
-          env: ${{ inputs.env }}
+        run: echo "${{inputs.env}}" | tee -a "$GITHUB_ENV"
 
       - id: generate-job-uuid
         run: |
