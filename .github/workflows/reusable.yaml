@@ -14,7 +14,14 @@ jobs:
     steps:
       - if: inputs.env
         name: Set environment variables
-        run: echo "$env" | tee -a "$GITHUB_ENV"
+        run: |
+          echo "$env" \
+          | yq -r '
+              to_entries
+            | map("\(.key)=<<__EOF__\n\(.value)\n__EOF__")
+            | join("\n")
+          ' \
+          | tee -a "$GITHUB_ENV"
         env:
           env: ${{ inputs.env }}
 
