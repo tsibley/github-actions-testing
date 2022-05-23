@@ -16,7 +16,8 @@ jobs:
         name: Set environment variables
         run: |
           echo "$env" \
-          | yq -r '
+          | yq -o json .
+          | jq -r '
               to_entries
             | map("\(.key)=<<__EOF__\n\(.value)\n__EOF__")
             | join("\n")
