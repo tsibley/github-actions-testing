@@ -14,14 +14,14 @@ jobs:
     steps:
       - if: inputs.env
         name: Set environment variables
-        run: |
-          echo "$env" \
+        run: >
+          echo "$env"
           | yq -o json .
           | jq -r '
               to_entries
             | map("\(.key)=<<__EOF__\n\(.value)\n__EOF__")
             | join("\n")
-          ' \
+          '
           | tee -a "$GITHUB_ENV"
         env:
           env: ${{ inputs.env }}
