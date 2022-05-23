@@ -19,7 +19,7 @@ jobs:
           | yq -o json .
           | jq -r '
               to_entries
-            | map("\(.key)=<<__EOF__\n\(.value)\n__EOF__")
+            | map("\(.key)<<__EOF__\n\(.value)\n__EOF__")
             | join("\n")
           '
           | tee -a "$GITHUB_ENV"
