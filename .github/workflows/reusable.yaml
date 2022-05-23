@@ -4,10 +4,20 @@ on:
     inputs:
       ref:
         type: string
+      env:
+        type: string
+        default: ""
+        required: false
 jobs:
   x:
     runs-on: ubuntu-latest
     steps:
+      - if: inputs.env
+        name: Set environment variables
+        run: echo "$env" | tee -a "$GITHUB_ENV"
+        env:
+          env: ${{ inputs.env }}
+
       - id: generate-job-uuid
         run: |
           echo "::set-output name=uuid::$(python3 -c 'from uuid import uuid4; print(uuid4())')"
