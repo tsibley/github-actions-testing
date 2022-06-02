@@ -1,0 +1,25 @@
+name: Linux containers on Windows
+
+# https://computingforgeeks.com/how-to-run-docker-containers-on-windows-server-2019/
+
+on:
+  - workflow_dispatch
+
+jobs:
+  main:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-2019
+          - windows-2022
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: Uninstall-Package -Name docker -ProviderName DockerMSFTProvider
+      - run: Get-VM WinContainerHost | Set-VMProcessor -ExposeVirtualizationExtensions $true
+      - run: Install-Module DockerProvider
+      - run: Install-Package Docker -ProviderName DockerProvider -RequiredVersion preview
+      - run: |
+          [Environment]::SetEnvironmentVariable("LCOW_SUPPORTED", "1", "Machine")
+      - run: Restart-Service docker
+      - run: docker run -it --rm ubuntu /bin/cat /etc/os-release
