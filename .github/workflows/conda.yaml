@@ -5,7 +5,7 @@ on:
 
 jobs:
   main:
-    runs-on: windows-2022
+    runs-on: windows-2019
     steps:
       - uses: nextstrain/cli/.github/actions/setup-integration-tests@trs/standalone
         with:
