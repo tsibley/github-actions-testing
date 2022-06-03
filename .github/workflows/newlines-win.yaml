@@ -10,23 +10,25 @@ jobs:
   main:
     runs-on: windows-latest
     steps:
+      - uses: actions/checkout@v3
+
       - shell: pwsh
-        run: python3 -c 'print("a\nb");'
+        run: python3 newline-unix
       - shell: pwsh
-        run: python3 -c 'print("a\r\nb");'
+        run: python3 newline-win
       - shell: pwsh
-        run: python3 -c 'print("a\rb");'
+        run: python3 newline-mac
 
       - shell: cmd
-        run: python3 -c 'print("a\nb");'
+        run: python3 newline-unix
       - shell: cmd
-        run: python3 -c 'print("a\r\nb");'
+        run: python3 newline-win
       - shell: cmd
-        run: python3 -c 'print("a\rb");'
+        run: python3 newline-mac
 
       - shell: bash
-        run: python3 -c 'print("a\nb");'
+        run: python3 newline-unix
       - shell: bash
-        run: python3 -c 'print("a\r\nb");'
+        run: python3 newline-win
       - shell: bash
-        run: python3 -c 'print("a\rb");'
+        run: python3 newline-mac
