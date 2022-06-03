@@ -1,0 +1,32 @@
+name: Newlines on Windows
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/newlines-win.yaml
+
+jobs:
+  main:
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        run: python3 -c 'print("a\nb");'
+      - shell: pwsh
+        run: python3 -c 'print("a\r\nb");'
+      - shell: pwsh
+        run: python3 -c 'print("a\rb");'
+
+      - shell: cmd
+        run: python3 -c 'print("a\nb");'
+      - shell: cmd
+        run: python3 -c 'print("a\r\nb");'
+      - shell: cmd
+        run: python3 -c 'print("a\rb");'
+
+      - shell: bash
+        run: python3 -c 'print("a\nb");'
+      - shell: bash
+        run: python3 -c 'print("a\r\nb");'
+      - shell: bash
+        run: python3 -c 'print("a\rb");'
