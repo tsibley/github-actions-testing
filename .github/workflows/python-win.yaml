@@ -34,7 +34,7 @@ jobs:
 
       - run: |
           python="$(type -p python)"
-          cp -v "$python" "$(dirname "$python")"/python3.exe
+          cp -v "$python" "$(dirname "$python")"/python3
 
       - run: type python3
       - run: python3 --version
