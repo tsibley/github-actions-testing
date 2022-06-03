@@ -16,10 +16,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - run: Uninstall-Package -Name docker -ProviderName DockerMSFTProvider
+        continue-on-error: true
       - run: Get-VM WinContainerHost | Set-VMProcessor -ExposeVirtualizationExtensions $true
+        continue-on-error: true
       - run: Install-Module DockerProvider
+        continue-on-error: true
       - run: Install-Package Docker -ProviderName DockerProvider -RequiredVersion preview
+        continue-on-error: true
       - run: |
           [Environment]::SetEnvironmentVariable("LCOW_SUPPORTED", "1", "Machine")
+        continue-on-error: true
       - run: Restart-Service docker
+        continue-on-error: true
       - run: docker run -it --rm ubuntu /bin/cat /etc/os-release
+        continue-on-error: true
