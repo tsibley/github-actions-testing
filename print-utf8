@@ -1,7 +1,0 @@
-print("✔")
-
-import click
-click.echo("✔")
-
-import rich
-rich.print("✔")

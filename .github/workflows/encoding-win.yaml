@@ -5,6 +5,9 @@ on:
   push:
     paths:
       - .github/workflows/encoding-win.yaml
+      - print-unicode
+      - click-unicode
+      - rich-unicode
 
 jobs:
   main:
@@ -14,18 +17,47 @@ jobs:
 
       - run: python3 -m pip install click rich
 
-      - run: python3 print-utf8
-        shell: pwsh
+
+      - shell: pwsh
+        run: python3 print-unicode
+        continue-on-error: true
+      - shell: pwsh
+        run: python3 click-unicode
+        continue-on-error: true
+      - shell: pwsh
+        run: python3 rich-unicode
         continue-on-error: true
 
-      - run: python3 print-utf8
-        shell: bash
+      - shell: bash
+        run: python3 print-unicode
+        continue-on-error: true
+      - shell: bash
+        run: python3 click-unicode
+        continue-on-error: true
+      - shell: bash
+        run: python3 rich-unicode
         continue-on-error: true
 
-      - run: python3 -X utf8 print-utf8
-        shell: pwsh
+
+      - shell: pwsh
+        run: python3 -X utf8 print-unicode
+        continue-on-error: true
+      - shell: pwsh
+        run: python3 -X utf8 click-unicode
+        continue-on-error: true
+      - shell: pwsh
+        run: python3 -X utf8 rich-unicode
         continue-on-error: true
 
-      - run: python3 -X utf8 print-utf8
+      - shell: bash
+        run: python3 -X utf8 print-unicode
+        continue-on-error: true
+      - shell: bash
+        run: python3 -X utf8 click-unicode
+        continue-on-error: true
+      - shell: bash
+        run: python3 -X utf8 rich-unicode
+        continue-on-error: true
+      - run: python3 -X utf8 print-unicode
         shell: bash
         continue-on-error: true
