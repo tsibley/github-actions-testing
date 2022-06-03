@@ -4,7 +4,7 @@ on:
   - workflow_dispatch
 
 jobs:
-  main:
+  setup-miniconda:
     name: python=${{ matrix.python }} os=${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -36,5 +36,32 @@ jobs:
           python="$(type -p python)"
           cp -v "$python" "$(dirname "$python")"/python3
 
+      - run: type python3
+      - run: python3 --version
+
+  setup-python:
+    name: python=${{ matrix.python }} os=${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+        python:
+          - 3.6
+          - 3.7
+          - 3.8
+          - 3.9
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python }}
+
+      - run: env
+      - run: type python
+      - run: python --version
       - run: type python3
       - run: python3 --version
