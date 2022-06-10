@@ -14,13 +14,9 @@ jobs:
         run: echo "HELLO=world" | tee -a "$GITHUB_ENV"
 
       - shell: bash
-        run: echo "<$HELLO>"
+        run: echo "$HELLO".zip
         continue-on-error: true
 
       - shell: pwsh
-        run: echo "<$Env:HELLO>"
-        continue-on-error: true
-
-      - shell: pwsh
-        run: echo "<$HELLO>"
+        run: echo "$Env:HELLO".zip
         continue-on-error: true
