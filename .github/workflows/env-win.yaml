@@ -1,0 +1,26 @@
+name: Env vars on Windows
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/env-win.yaml
+
+jobs:
+  main:
+    runs-on: windows-latest
+    steps:
+      - shell: bash
+        run: echo "HELLO=world" | tee -a "$GITHUB_ENV"
+
+      - shell: bash
+        run: echo "<$HELLO>"
+        continue-on-error: true
+
+      - shell: pwsh
+        run: echo "<$Env:HELLO>"
+        continue-on-error: true
+
+      - shell: pwsh
+        run: echo "<$HELLO>"
+        continue-on-error: true
