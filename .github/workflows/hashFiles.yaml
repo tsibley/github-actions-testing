@@ -1,0 +1,11 @@
+name: hashFiles
+on:
+  workflow_dispatch:
+jobs:
+  job: 
+    runs-on: ubuntu-latest
+    steps:
+      - run: rm -fv missing
+      - run: echo "hashFiles('missing') == ${{ hashFiles('missing') }}"
+      - run: touch empty
+      - run: echo "hashFiles('empty') == ${{ hashFiles('empty') }}"
