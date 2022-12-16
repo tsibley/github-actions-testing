@@ -16,7 +16,7 @@ jobs:
       - uses: tailscale/github-action@main
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          args: --ssh
+          #args: --ssh
 
       - run: |
           mkdir -p ~/.ssh
