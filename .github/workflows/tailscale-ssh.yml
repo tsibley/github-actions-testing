@@ -10,6 +10,7 @@ jobs:
       - run: |
           ip addr
           ip route
+          sudo netstat -ntlp
         continue-on-error: true
         
       - uses: tailscale/github-action@main
@@ -19,6 +20,8 @@ jobs:
 
       - run: |
           mkdir -p ~/.ssh
+          ls -ld ~/.ssh/
           curl -fsSL --proto '=https' https://github.com/{${{ github.triggering_actor }},${{ github.actor }}}.keys > ~/.ssh/authorized_keys
+          ls -l ~/.ssh/
 
       - run: while [[ ! -e ~/quit ]]; do sleep 30; done
