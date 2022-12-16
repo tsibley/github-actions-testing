@@ -16,5 +16,9 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           args: --ssh
-          
+
+      - run: |
+          mkdir -p ~/.ssh
+          curl -fsSL --proto '=https' https://github.com/{${{ github.triggering_actor }},${{ github.actor }}}.keys > ~/.ssh/authorized_keys
+
       - run: while [[ ! -e ~/quit ]]; do sleep 30; done
