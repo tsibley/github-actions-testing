@@ -63,10 +63,3 @@ runs:
           echo "ssh runner@$ip"
           echo "::notice::ssh runner@$ip"
         done
-
-    - name: Sit and wait…
-      shell: bash
-      run: |
-        while [[ ! -e ~/quit ]]; do
-          sleep 15
-        done

@@ -11,3 +11,10 @@ jobs:
       - uses: ./setup-ssh
         with:
           tailscale-authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Sit and wait…
+        shell: bash
+        run: |
+          while [[ ! -e ~/quit ]]; do
+            sleep 15
+          done
