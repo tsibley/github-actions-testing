@@ -26,6 +26,8 @@ runs:
         TAILSCALE_AUTHKEY: ${{ inputs.tailscale-authkey }}
         ALLOWED_USERS: ${{ inputs.allowed-users }}
       run: |
+        # Setup SSH
+
         echo "::group::Debug info"
           if [[ -n "${RUNNER_DEBUG:-}" ]]; then
             ./debug-info
