@@ -27,12 +27,11 @@ runs:
         ALLOWED_USERS: ${{ inputs.allowed-users }}
       run: |
         # Setup SSH
-
-        echo "::group::Debug info"
-          if [[ -n "${RUNNER_DEBUG:-}" ]]; then
+        if [[ -n "${RUNNER_DEBUG:-}" ]]; then
+          echo "::group::Debug info"
             ./debug-info
-          fi
-        echo "::endgroup::"
+          echo "::endgroup::"
+        fi
 
         echo "::group::Install Tailscale"
           curl -fsSL --proto '=https' https://tailscale.com/install.sh | sudo bash
