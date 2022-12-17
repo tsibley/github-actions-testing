@@ -33,12 +33,13 @@ runs:
       env:
         TAILSCALE_AUTHKEY: ${{ inputs.tailscale-authkey }}
       run: |
+        mkdir -p /tmp/tailscale
         curl -fsSL --proto "=https" https://pkgs.tailscale.com/stable/tailscale_1.34.1_amd64.tgz \
-          | tar xzvpf - --strip-components 1 --directory ~/tailscale
+          | tar xzvpf - --strip-components 1 --directory /tmp/tailscale
 
-        sudo mv -v ~/tailscale/tailscale{,d} /usr/sbin/
-        sudo mv -v ~/tailscale/systemd/tailscaled.defaults /etc/defaults/tailscaled
-        sudo mv -v ~/tailscale/systemd/tailscaled.service /etc/systemd/system/
+        sudo mv -v /tmp/tailscale/tailscale{,d} /usr/sbin/
+        sudo mv -v /tmp/tailscale/systemd/tailscaled.defaults /etc/defaults/tailscaled
+        sudo mv -v /tmp/tailscale/systemd/tailscaled.service /etc/systemd/system/
 
         sudo systemd daemon-reload
         sudo systemd enable --now tailscaled
