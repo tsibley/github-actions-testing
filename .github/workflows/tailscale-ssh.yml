@@ -7,25 +7,5 @@ jobs:
   job:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          ip addr
-          ip route
-          sudo netstat -ntlp
-        continue-on-error: true
-        
-      - uses: tailscale/github-action@main
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          #xxx fixme: explain why we don't use tailscale ssh
-          #args: --ssh
-
-      - run: |
-          mkdir -p ~/.ssh
-          ls -ld ~/.ssh/
-          curl -fsSL --proto '=https' https://github.com/{${{ github.triggering_actor }},${{ github.actor }}}.keys > ~/.ssh/authorized_keys
-          ls -l ~/.ssh/
-
-      - run: |
-          for ip in $(tailscale ip); do echo ssh runner@$ip; done | tee "$GITHUB_STEP_SUMMARY"
-
-      - run: while [[ ! -e ~/quit ]]; do sleep 30; done
+      - uses: actions/checkout@v3
+      - uses: ./setup-ssh
