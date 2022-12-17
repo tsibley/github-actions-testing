@@ -38,7 +38,7 @@ runs:
           | tar xzvpf - --strip-components 1 --directory /tmp/tailscale
 
         sudo mv -v /tmp/tailscale/tailscale{,d} /usr/sbin/
-        sudo mv -v /tmp/tailscale/systemd/tailscaled.defaults /etc/defaults/tailscaled
+        sudo mv -v /tmp/tailscale/systemd/tailscaled.defaults /etc/default/tailscaled
         sudo mv -v /tmp/tailscale/systemd/tailscaled.service /etc/systemd/system/
 
         sudo systemd daemon-reload
