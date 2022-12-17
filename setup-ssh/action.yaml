@@ -61,5 +61,4 @@ runs:
       run: |
         for ip in $(tailscale ip); do
           echo "ssh runner@$ip"
-          echo "::notice::ssh runner@$ip"
         done
