@@ -9,3 +9,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./setup-ssh
+        with:
+          tailscale-authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
