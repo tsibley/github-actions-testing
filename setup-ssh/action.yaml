@@ -56,9 +56,13 @@ runs:
         curl -fsSL --proto '=https' https://github.com/{${{ inputs.allowed-users }}}.keys \
             | tee ~/.ssh/authorized_keys
 
+    - name: Connection information
+      shell: bash
+      run: |
         for ip in $(tailscale ip); do
-          echo "    ssh runner@$ip"
-        done | tee "$GITHUB_STEP_SUMMARY"
+          echo "ssh runner@$ip"
+          echo "::notice::ssh runner@$ip"
+        done
 
     - name: Sit and wait…
       shell: bash
