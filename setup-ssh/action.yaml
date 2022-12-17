@@ -42,8 +42,8 @@ runs:
         sudo mv -v /tmp/tailscale/systemd/tailscaled.defaults /etc/default/tailscaled
         sudo mv -v /tmp/tailscale/systemd/tailscaled.service /etc/systemd/system/
 
-        sudo systemd daemon-reload
-        sudo systemd enable --now tailscaled
+        sudo systemctl daemon-reload
+        sudo systemctl enable --now tailscaled
         sudo tailscale up \
           --authkey "$TAILSCALE_AUTHKEY" \
           --hostname "github-runner-$(< /etc/hostname)"
