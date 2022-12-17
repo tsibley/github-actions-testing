@@ -33,6 +33,7 @@ runs:
       env:
         TAILSCALE_AUTHKEY: ${{ inputs.tailscale-authkey }}
       run: |
+        set -x
         mkdir -p /tmp/tailscale
         curl -fsSL --proto "=https" https://pkgs.tailscale.com/stable/tailscale_1.34.1_amd64.tgz \
           | tar xzvpf - --strip-components 1 --directory /tmp/tailscale
@@ -50,6 +51,7 @@ runs:
     - name: Setup SSH
       shell: bash
       run: |
+        set -x
         mkdir -p ~/.ssh/
         curl -fsSL --proto '=https' https://github.com/{${{ inputs.allowed-users }}}.keys \
             | tee ~/.ssh/authorized_keys
