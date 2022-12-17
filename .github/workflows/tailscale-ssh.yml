@@ -16,6 +16,7 @@ jobs:
       - uses: tailscale/github-action@main
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          #xxx fixme: explain why we don't use tailscale ssh
           #args: --ssh
 
       - run: |
@@ -23,5 +24,8 @@ jobs:
           ls -ld ~/.ssh/
           curl -fsSL --proto '=https' https://github.com/{${{ github.triggering_actor }},${{ github.actor }}}.keys > ~/.ssh/authorized_keys
           ls -l ~/.ssh/
+
+      - run: |
+          for ip in $(tailscale ip); do echo ssh runner@$ip; done | tee "$GITHUB_STEP_SUMMARY"
 
       - run: while [[ ! -e ~/quit ]]; do sleep 30; done
