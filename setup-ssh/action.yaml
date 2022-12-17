@@ -1,0 +1,65 @@
+name: Setup SSH
+description: >-
+  Sets up SSH access to the current runner host over a Tailscale network.
+
+  Authentication uses the public SSH keys associated with GitHub users.  By
+  default, the users who triggered the initial and current workflow runs are
+  allowed.
+
+inputs:
+  tailscale-authkey:
+    description: Tailscale auth key (i.e. from the admin panel); highly recommended to be ephemeral!
+    required: true
+
+  allowed-users:
+    description: Comma-separated list of GitHub usernames who are allowed access via their public SSH keys.
+    required: false
+    default: "${{ github.triggering_actor }},${{ github.actor }}"
+
+runs:
+  using: composite
+  steps:
+    - if: runner.debug
+      name: Debugging info
+      shell: bash
+      run: |
+        set -x
+        ip addr || true
+        ip route || true
+        sudo ss -ntulp || true
+
+    - name: Setup Tailscale
+      shell: bash
+      env:
+        TAILSCALE_AUTHKEY: ${{ inputs.tailscale-authkey }}
+      run: |
+        curl -fsSL --proto "=https" https://pkgs.tailscale.com/stable/tailscale_1.34.1_amd64.tgz \
+          | tar xzvpf - --strip-components 1 --directory ~/tailscale
+
+        sudo mv -v ~/tailscale/tailscale{,d} /usr/sbin/
+        sudo mv -v ~/tailscale/systemd/tailscaled.defaults /etc/defaults/tailscaled
+        sudo mv -v ~/tailscale/systemd/tailscaled.service /etc/systemd/system/
+
+        sudo systemd daemon-reload
+        sudo systemd enable --now tailscaled
+        sudo tailscale up \
+          --authkey "$TAILSCALE_AUTHKEY" \
+          --hostname "github-runner-$(< /etc/hostname)"
+
+    - name: Setup SSH
+      shell: bash
+      run: |
+        mkdir -p ~/.ssh/
+        curl -fsSL --proto '=https' https://github.com/{${{ inputs.allowed-users }}}.keys \
+            | tee ~/.ssh/authorized_keys
+
+        for ip in $(tailscale ip); do
+          echo "    ssh runner@$ip"
+        done | tee "$GITHUB_STEP_SUMMARY"
+
+    - name: Sit and wait…
+      shell: bash
+      run: |
+        while [[ ! -e ~/quit ]]; do
+          sleep 15
+        done
