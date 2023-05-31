@@ -1,7 +1,11 @@
 name: know thyself
+
 on:
   workflow_call:
+
 jobs:
+  # Determine how this workflow was called, information not normally available
+  # since called workflows run in the context of the calling workflow.
   workflow-context:
     runs-on: ubuntu-latest
     steps:
@@ -73,6 +77,8 @@ jobs:
           # <https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow>
           repository="${ref%%/.github/*}"
 
+          # A "ref" value like the caller's "github.workflow_ref" context, not a Git ref.
+          # <https://docs.github.com/en/actions/learn-github-actions/contexts#github-context>
           echo "WORKFLOW_REF=$ref" | tee -a "$GITHUB_ENV"
           echo "WORKFLOW_SHA=$sha" | tee -a "$GITHUB_ENV"
           echo "WORKFLOW_REPOSITORY=$repository" | tee -a "$GITHUB_ENV"
@@ -82,6 +88,9 @@ jobs:
       sha: ${{ env.WORKFLOW_SHA }}
       repository: ${{ env.WORKFLOW_REPOSITORY }}
 
+
+  # Example of using the workflow context outputs to checkout the workflow's
+  # repository for access to sibling programs, workflows, actions, etc.
   example:
     needs:
       - workflow-context
