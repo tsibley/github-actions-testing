@@ -8,9 +8,8 @@ jobs:
       - id: generate-job-uuid
         name: Generate job UUID
         shell: bash
-        run: >2
-            echo "JOB_UUID=$(python3 -c 'from uuid import uuid4; print(uuid4())')"
-          | tee -a "$GITHUB_ENV"
+        run: |
+          echo "JOB_UUID=$(python3 -c 'from uuid import uuid4; print(uuid4())')" | tee -a "$GITHUB_ENV"
 
       - name: ${{ env.JOB_UUID }}
         shell: bash
