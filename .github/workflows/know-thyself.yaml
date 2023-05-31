@@ -66,9 +66,11 @@ jobs:
           #   2023-05-31T22:31:19.5945680Z Waiting for a runner to pick up this job...
           #   …
           #   2023-05-31T22:31:26.7184921Z Uses: tsibley/github-actions-testing/.github/workflows/know-thyself.yaml@refs/heads/master (2320b96132da7d16c42253f52eb4dffe94017ff5)
-
+          #
           ref="$(grep -P '(?<=Job defined at: )\S+' --only-matching --max-count=1 "$job_logs")"
           sha="$(grep -P '(?<=\Q'"$ref"'\E [(])[0-9a-fA-F]{40}(?=[)])' --only-matching --max-count=1 "$job_logs")"
+
+          # <https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow>
           repository="${ref%%/.github/*}"
 
           echo "WORKFLOW_REF=$ref" | tee -a "$GITHUB_ENV"
