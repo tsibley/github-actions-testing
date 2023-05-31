@@ -20,9 +20,9 @@ jobs:
             core.setOutput("sha", unvalidatedClaims.job_workflow_sha);
             core.setOutput("repository", unvalidatedClaims.job_workflow_ref.replace(/\/\.github\/.*$/, ""));
     outputs:
-      ref: ${{ steps.context.ref }}
-      sha: ${{ steps.context.sha }}
-      repository: ${{ steps.context.repository }}
+      ref: ${{ steps.context.outputs.ref }}
+      sha: ${{ steps.context.outputs.sha }}
+      repository: ${{ steps.context.outputs.repository }}
 
   example:
     needs:
