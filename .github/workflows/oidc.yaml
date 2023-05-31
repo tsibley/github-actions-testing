@@ -1,0 +1,15 @@
+name: oidc
+on:
+  workflow_dispatch:
+jobs:
+  x:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm install @actions/core@1.6.0 @actions/http-client
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const core = require("@actions/core");
+            let idToken = await core.getIDToken();
+            let unvalidatedClaims = JSON.parse(atob(idToken.split(".", 2)[1]));
+            console.log(unvalidatedClaims);
