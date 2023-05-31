@@ -1,0 +1,74 @@
+name: know thyself
+on:
+  workflow_call:
+jobs:
+  x:
+    runs-on: ubuntu-latest
+    steps:
+      - id: generate-job-uuid
+        name: Generate job UUID
+        shell: bash
+        run: >2
+            echo "JOB_UUID=$(python3 -c 'from uuid import uuid4; print(uuid4())')"
+          | tee -a "$GITHUB_ENV"
+
+      - name: ${{ env.JOB_UUID }}
+        shell: bash
+        run: |
+          echo "Job UUID: $JOB_UUID"
+
+      - id: get-job-id
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          job_id="$(mktemp -t job-id-XXXXXX)"
+          attempt=0
+
+          while [[ $((attempt++)) -le 10 ]]; do
+            curl -fsSL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/runs/"$GITHUB_RUN_ID"/jobs \
+                -H "Authorization: Bearer $GITHUB_TOKEN" \
+              | jq -r '.jobs | map(select(.steps | map(select(.name == env.JOB_UUID)) | length != 0)) | .[0].id | values' \
+              > "$job_id"
+
+            # We got a job id, so we're done.
+            [[ -s "$job_id" ]] && break
+
+            # Retry in 1s
+            sleep 1
+          done
+
+          if [[ ! -s "$job_id" ]]; then
+            echo "Failed to find job id" >&2
+            exit 1
+          fi
+
+          echo "GITHUB_JOB_ID=$(< "$job_id")" | tee -a "$GITHUB_ENV"
+
+      # 2023-05-31T21:37:17.6758055Z Requested labels: ubuntu-latest
+      # 2023-05-31T21:37:17.6758345Z Job defined at: tsibley/github-actions-testing/.github/workflows/reusable.yaml@refs/heads/master
+      # 2023-05-31T21:37:17.6758550Z Reusable workflow chain:
+      # 2023-05-31T21:37:17.6758671Z tsibley/github-actions-testing-2/.github/workflows/caller.yaml@refs/heads/main (feb99eaf37b38677964f6938e4dabbf01f80ff50)
+      # 2023-05-31T21:37:17.6758812Z -> tsibley/github-actions-testing/.github/workflows/reusable.yaml@refs/heads/master (2a687044ec2536380629dda2b57212199bd66539)
+      # …
+      # 2023-05-31T21:37:24.8437909Z Uses: tsibley/github-actions-testing/.github/workflows/reusable.yaml@refs/heads/master (2a687044ec2536380629dda2b57212199bd66539)
+      - id: get-ref
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          job_logs="$(mktemp -t job-logs-XXXXXX)"
+
+          curl -fsSL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/jobs/"$GITHUB_JOB_ID"/logs \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            > "$job_logs"
+
+          ref="$(grep -P '(?<=Job defined at: )\S+' --only-matching --max-count=1 "$job_logs")"
+          sha="$(grep -P '(?<=\Q'"$ref"'\E [(])[0-9a-fA-F]{40}(?=[)])' --only-matching --max-count=1 "$job_logs")"
+
+          echo "WORKFLOW_REF=$ref" | tee -a "$GITHUB_ENV"
+          echo "WORKFLOW_SHA=$sha" | tee -a "$GITHUB_ENV"
+
+    outputs:
+      workflow-ref: ${{ env.WORKFLOW_REF }}
+      workflow-sha: ${{ env.WORKFLOW_SHA }}
