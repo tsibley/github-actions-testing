@@ -1,12 +1,14 @@
 name: oidc
 on:
   workflow_dispatch:
+  workflow_call:
 jobs:
   x:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
     steps:
+      - run: env
       - uses: actions/github-script@v6
         with:
           script: |
