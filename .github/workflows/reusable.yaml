@@ -60,6 +60,20 @@ jobs:
 
           echo "GITHUB_JOB_ID=$(< "$job_id")" | tee -a "$GITHUB_ENV"
 
+      # 2023-05-31T21:37:17.6758055Z Requested labels: ubuntu-latest
+      # 2023-05-31T21:37:17.6758345Z Job defined at: tsibley/github-actions-testing/.github/workflows/reusable.yaml@refs/heads/master
+      # 2023-05-31T21:37:17.6758550Z Reusable workflow chain:
+      # 2023-05-31T21:37:17.6758671Z tsibley/github-actions-testing-2/.github/workflows/caller.yaml@refs/heads/main (feb99eaf37b38677964f6938e4dabbf01f80ff50)
+      # 2023-05-31T21:37:17.6758812Z -> tsibley/github-actions-testing/.github/workflows/reusable.yaml@refs/heads/master (2a687044ec2536380629dda2b57212199bd66539)
+      # …
+      # 2023-05-31T21:37:24.8437909Z Uses: tsibley/github-actions-testing/.github/workflows/reusable.yaml@refs/heads/master (2a687044ec2536380629dda2b57212199bd66539)
+      - id: get-job-logs
+        run: |
+          curl -fsSL https://api.github.com/repos/"$GITHUB_REPOSITORY"/actions/jobs/"$GITHUB_JOB_ID"/logs \
+              -H "Authorization: Bearer $GITHUB_TOKEN"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - run: pwd
       - run: ls -lR .
       - run: ls -lR /home/runner/work
