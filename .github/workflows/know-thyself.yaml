@@ -75,7 +75,7 @@ jobs:
 
           echo "WORKFLOW_REF=$ref" | tee -a "$GITHUB_ENV"
           echo "WORKFLOW_SHA=$sha" | tee -a "$GITHUB_ENV"
-          echo "WORKFLOW_REPOSITORY=$repo" | tee -a "$GITHUB_ENV"
+          echo "WORKFLOW_REPOSITORY=$repository" | tee -a "$GITHUB_ENV"
 
     outputs:
       ref: ${{ env.WORKFLOW_REF }}
