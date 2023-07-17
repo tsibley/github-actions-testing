@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - if: github.run_attempt > 1 && runner.debug == 1
-        uses: nextstrain/.github/actions/setup-debugger@actions/setup-debugger
+        uses: nextstrain/.github/actions/setup-debugger@master
         with:
           tailscale-auth-key: ${{ secrets.TAILSCALE_AUTH_KEY }}
 
