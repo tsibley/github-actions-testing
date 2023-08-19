@@ -1,0 +1,14 @@
+name: Pathogen repo build
+
+on: workflow_dispatch
+
+jobs:
+  run-build:
+    permissions:
+      id-token: write
+    uses: nextstrain/.github/.github/workflows/pathogen-repo-build.yaml@trs/pathogen-repo-build/wait-for-aws-batch-job
+    with:
+      repo: nextstrain/zika-tutorial
+      runtime: aws-batch
+      run: nextstrain build --detach --env X=X .
+    secrets: inherit
