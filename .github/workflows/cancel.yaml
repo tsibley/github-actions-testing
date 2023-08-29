@@ -10,24 +10,24 @@ jobs:
     steps:
       - name: one
         run: sleep 20
-      - name: two
-        run: sleep 20
-      - name: three
-        run: sleep 20
-      - name: four
-        run: sleep 20
-      - name: five
-        run: sleep 20
-      - name: six
-        run: sleep 20
-      - name: seven
-        run: sleep 20
-      - name: eight
-        run: sleep 20
-      - name: nine
-        run: sleep 20
-      - name: ten
-        run: sleep 20
+#     - name: two
+#       run: sleep 20
+#     - name: three
+#       run: sleep 20
+#     - name: four
+#       run: sleep 20
+#     - name: five
+#       run: sleep 20
+#     - name: six
+#       run: sleep 20
+#     - name: seven
+#       run: sleep 20
+#     - name: eight
+#       run: sleep 20
+#     - name: nine
+#       run: sleep 20
+#     - name: ten
+#       run: sleep 20
     continue-on-error: true
 
   test:
