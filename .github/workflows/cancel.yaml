@@ -31,6 +31,7 @@ jobs:
     continue-on-error: true
 
   test:
+    needs: long
     runs-on: ubuntu-latest
     if: cancelled()
     steps:
