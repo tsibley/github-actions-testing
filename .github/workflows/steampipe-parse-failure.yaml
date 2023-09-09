@@ -1,0 +1,8 @@
+on: workflow_dispatch
+name: steampipe parse failure
+jobs:
+  job:
+    runs-on: ubuntu
+    continue-on-error: ${{ true }}
+    steps:
+      - run: echo hello
