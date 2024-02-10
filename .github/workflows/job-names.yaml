@@ -1,0 +1,38 @@
+on: workflow_dispatch
+name: job names
+jobs:
+  ax:
+    name: A / X
+    runs-on: ubuntu
+    steps:
+      - run: echo hello
+
+  ay:
+    name: A / Y
+    runs-on: ubuntu
+    steps:
+      - run: echo hello
+
+  az:
+    name: A / Z
+    runs-on: ubuntu
+    steps:
+      - run: echo hello
+
+  bx:
+    name: B / BB / X
+    runs-on: ubuntu
+    steps:
+      - run: echo hello
+
+  by:
+    name: B / BB / Y
+    runs-on: ubuntu
+    steps:
+      - run: echo hello
+
+  bz:
+    name: B / BB / Z
+    runs-on: ubuntu
+    steps:
+      - run: echo hello
