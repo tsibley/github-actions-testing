@@ -1,0 +1,17 @@
+name: matrix dedup
+
+on:
+  - workflow_dispatch
+
+jobs:
+  job:
+    strategy:
+      fail-fast: false
+      matrix:
+        x:
+          - a
+          - b
+          - a
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{x}}
