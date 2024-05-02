@@ -14,4 +14,4 @@ jobs:
           - a
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{x}}
+      - run: echo ${{matrix.x}}
