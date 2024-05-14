@@ -1,1 +1,10 @@
-$Id$
+import re
+
+id_tag = """$Id$"""
+
+if match := re.search('[$]Id:\s*(?P<commit>\S+?)\s*[$]$', id_tag):
+    commit = match["commit"]
+else:
+    commit = None
+
+print(commit)
