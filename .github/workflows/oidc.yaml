@@ -17,7 +17,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            let idToken = await core.getIDToken(process.env["INPUT_AUD"] || "github-actions");
+            let idToken = await core.getIDToken(${{ toJSON(inputs.aud) }});
             let unvalidatedClaims = JSON.parse(atob(idToken.split(".", 2)[1]));
             console.log(unvalidatedClaims);
 
