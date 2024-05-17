@@ -1,6 +1,11 @@
 name: oidc
 on:
   workflow_dispatch:
+    inputs:
+      aud:
+        description: audience
+        type: string
+        required: false
   workflow_call:
 jobs:
   workflow-context:
@@ -12,7 +17,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            let idToken = await core.getIDToken();
+            let idToken = await core.getIDToken(core.getInput("aud") || "github-actions");
             let unvalidatedClaims = JSON.parse(atob(idToken.split(".", 2)[1]));
             console.log(unvalidatedClaims);
 
