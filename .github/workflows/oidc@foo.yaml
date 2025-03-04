@@ -1,0 +1,44 @@
+name: oidc
+on:
+  workflow_dispatch:
+    inputs:
+      aud:
+        description: audience
+        type: string
+        required: false
+  workflow_call:
+jobs:
+  workflow-context:
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - id: context
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let idToken = await core.getIDToken(${{ toJSON(inputs.aud) }});
+            let unvalidatedClaims = JSON.parse(atob(idToken.split(".", 2)[1]));
+            console.log(unvalidatedClaims);
+
+            core.setOutput("ref", unvalidatedClaims.job_workflow_ref);
+            core.setOutput("sha", unvalidatedClaims.job_workflow_sha);
+            core.setOutput("repository", unvalidatedClaims.job_workflow_ref.replace(/\/\.github\/.*$/, ""));
+    outputs:
+      ref: ${{ steps.context.outputs.ref }}
+      sha: ${{ steps.context.outputs.sha }}
+      repository: ${{ steps.context.outputs.repository }}
+
+  example:
+    needs:
+      - workflow-context
+    runs-on: ubuntu-latest
+    steps:
+      - run: tree -a
+
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ needs.workflow-context.outputs.repository }}
+          ref: ${{ needs.workflow-context.outputs.sha }}
+
+      - run: tree -a
